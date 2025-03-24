@@ -1,0 +1,33 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: AUTENTICACION
+          uri: lb://autenticacion
+          predicates:
+            - Path=/auth/**
+
+        - id: MICROSERVICIO-HOTELES
+          uri: lb://microservicio-hotel
+          predicates:
+            - Path=/api/hoteles/**
+          filters:
+            - AuthenticationFilter
+
+        - id: MICROSERVICIO-VUELOS
+          uri: lb://microservicio-vuelo
+          predicates:
+            - Path=/api/vuelos/**
+          filters:
+            - AuthenticationFilter
+
+        - id: MICROSERVICIO-RESERVAS
+          uri: lb://microservicio-reserva
+          predicates:
+            - Path=/api/reservas/**
+          filters:
+            - AuthenticationFilter
+
+eureka:
+  client:
+    defaultZone: http://localhost:8761/eureka
